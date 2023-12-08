@@ -2,10 +2,20 @@ import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AppLayout from "./ui/AppLayout.tsx";
 import Chat from "./pages/Chat.tsx";
+import {QueryClient, QueryClientProvider} from "react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000
+    },
+  },
+});
+
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
@@ -14,7 +24,7 @@ function App() {
           {/*<Route path='/login' element={<Login />} />*/}
         </Routes>
       </BrowserRouter>
-    </>
+    </QueryClientProvider>
   )
 }
 
