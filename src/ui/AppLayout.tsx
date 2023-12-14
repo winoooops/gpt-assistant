@@ -4,10 +4,12 @@ import {Outlet} from "react-router-dom";
 
 const StyledAppLayout = styled.div`
   display: flex;
-  height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  min-height: 100vh;
+`;
+
+const Main = styled.main`
+  position: relative;
 `;
 
 
@@ -15,7 +17,9 @@ const StyledAppLayout = styled.div`
 export default function AppLayout() {
 	return (
 		<StyledAppLayout>
-      <Outlet />
+      <Main>
+        <Outlet />
+      </Main>
     </StyledAppLayout>
 	)
 }

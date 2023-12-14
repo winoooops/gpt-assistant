@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AppLayout from "./ui/AppLayout.tsx";
 import Chat from "./pages/Chat.tsx";
 import {QueryClient, QueryClientProvider} from "react-query";
+import {GlobalStyles} from "./styles/GlobalStyles.ts";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,6 +17,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <GlobalStyles />
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>

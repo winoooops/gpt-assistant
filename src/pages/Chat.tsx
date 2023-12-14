@@ -1,28 +1,22 @@
-import Heading from "../ui/Heading.tsx";
-import {useGetChat} from "../features/chat/useChat.ts";
-import {useState} from "react";
+import UserInput from "../features/chat/UserInput.tsx";
+import ChatHistory from "../features/chat/ChatHistory.tsx";
+import styled from "styled-components";
+
+const Container = styled.div`
+  height: 100vh; 
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  ;
+`
+
 
 export default function Chat() {
-  const { isLoading, getReply } = useGetChat();
-  const [prompt, setPrompt] = useState("");
-  const [reply, setReply] = useState("");
-
-
-  function showAnswer() {
-    getReply(prompt, { onSuccess: ({data}) => setReply(data) })
-  }
-
-  if(isLoading) {
-    return <p>Loading...</p>
-  }
-
-
   return (
-    <>
-      <Heading as="h1">Chat</Heading>
-      <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-      <button onClick={showAnswer}>Send</button>
-      <p>{reply}</p>
-    </>
+    <Container>
+      <ChatHistory />
+      <UserInput/>
+    </Container>
   )
 }
