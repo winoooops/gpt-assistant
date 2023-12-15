@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import {RiArrowDownLine} from "react-icons/ri";
 import {useScroll} from "../../hooks/useScroll.ts";
+import {useGetMessage} from "./useChat.ts";
 
 const dummyMessages = [
   {
@@ -52,6 +53,11 @@ export default function ChatHistory() {
     showJumpToBottom,
     handleScrollToBottom
   } = useScroll();
+
+  const {message} = useGetMessage();
+
+  console.log(message);
+
 
 
   return (

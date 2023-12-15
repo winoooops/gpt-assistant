@@ -2,7 +2,7 @@ import { MdSend } from "react-icons/md";
 
 import styled from "styled-components";
 import {FormEvent, useCallback, useEffect, useState} from "react";
-import {useGetChat} from "./useChat.ts";
+import {useChatCompletion} from "./useChat.ts";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import InputField from "../../ui/InputField.tsx";
 
@@ -26,7 +26,7 @@ const StyledInputForm = styled.form`
 
 export default function UserInput() {
   const [prompt, setPrompt] = useState("");
-  const { isLoading, getReply } = useGetChat();
+  const { isLoading, getReply } = useChatCompletion();
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
