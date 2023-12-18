@@ -1,10 +1,11 @@
 import {createClient} from "@supabase/supabase-js";
 
+// @ts-expect-error: compiler seem to miss env from meta
 const supabaseUrl = import.meta.env.VITE_STORAGE_API_URL;
+
+// @ts-expect-error: compiler seem to miss env from meta
 const supabaseKey = import.meta.env.VITE_STORAGE_API_KEY;
 
-console.log(supabaseUrl, supabaseKey);
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-console.log(supabase);
 export default supabase;

@@ -1,32 +1,11 @@
-import ChatMessageGroup from "./ChatMessageGroup.tsx";
 import styled from "styled-components";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import {RiArrowDownLine} from "react-icons/ri";
 import {useScroll} from "../../hooks/useScroll.ts";
-import {useGetMessage} from "./useChat.ts";
-
-const dummyMessages = [
-  {
-    id: 1,
-    prompt: "Hello",
-    response: "Remember, adding a file to .gitignore only prevents changes to that file from being staged or committed; it doesn't remove the file from the repository if it was previously committed. If the file has been committed and you want to remove it from the repository history, you may need to use the git rm --cached <file> command and commit the change. This action, however, will affect the file's history in the repository."
-  },
-  {
-    id: 2,
-    prompt: "Hello",
-    response: "How can I help you today"
-  },
-  {
-    id:3,
-    prompt: "Remember, adding a file to .gitignore only prevents changes to that file from being staged or committed; it doesn't remove the file from the repository if it was previously committed. If the file has been committed and you want to remove it from the repository history, you may need to use the git rm --cached <file> command and commit the change. This action, however, will affect the file's history in the repository.",
-    response: "How can I help you today"
-  },
-  {
-    id:4,
-    prompt: "Remember, adding a file to .gitignore only prevents changes to that file from being staged or committed; it doesn't remove the file from the repository if it was previously committed. If the file has been committed and you want to remove it from the repository history, you may need to use the git rm --cached <file> command and commit the change. This action, however, will affect the file's history in the repository.",
-    response: "How can I help you today"
-  },
-];
+import ChatMessage from "./ChatMessage.tsx";
+import {IChatMessage} from "./chat.type.ts";
+import {useContext} from "react";
+import {MessageContext} from "./MessageContext.tsx";
 
 const StyledChatHistory = styled.div`
   display: flex;
@@ -54,16 +33,17 @@ export default function ChatHistory() {
     handleScrollToBottom
   } = useScroll();
 
-  const {message} = useGetMessage();
+  // @ts-expect-error: should be fine
+  const { messages } = useContext(MessageContext);
 
-  console.log(message);
 
+  if(messages.length === 0) return <p>Chat</p>
 
 
   return (
     <StyledChatHistory ref={containerRef}>
       {
-        dummyMessages.map((message) => <ChatMessageGroup key={message.id} message={message}/>)
+        messages.map((message: IChatMessage) => <ChatMessage key={message.id} message={message}/>)
       }
       { showJumpToBottom &&
         <FloatingButton onClick={handleScrollToBottom} shape="square" translucent={true}>

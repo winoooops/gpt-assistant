@@ -1,6 +1,7 @@
 import UserInput from "../features/chat/UserInput.tsx";
 import ChatHistory from "../features/chat/ChatHistory.tsx";
 import styled from "styled-components";
+import {MessageProvider} from "../features/chat/MessageContext.tsx";
 
 const Container = styled.div`
   height: 100vh; 
@@ -14,9 +15,11 @@ const Container = styled.div`
 
 export default function Chat() {
   return (
-    <Container>
-      <ChatHistory />
-      <UserInput/>
-    </Container>
+    <MessageProvider>
+      <Container>
+        <ChatHistory />
+        <UserInput/>
+      </Container>
+    </MessageProvider>
   )
 }

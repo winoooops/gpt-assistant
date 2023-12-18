@@ -1,10 +1,10 @@
 import { MdSend } from "react-icons/md";
 
 import styled from "styled-components";
-import {FormEvent, useCallback, useEffect, useState} from "react";
-import {useChatCompletion} from "./useChat.ts";
+import {FormEvent, useCallback, useContext, useEffect, useState} from "react";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import InputField from "../../ui/InputField.tsx";
+import {MessageContext} from "./MessageContext.tsx";
 
 const Container = styled.div`
   padding: 1rem;
@@ -26,7 +26,9 @@ const StyledInputForm = styled.form`
 
 export default function UserInput() {
   const [prompt, setPrompt] = useState("");
-  const { isLoading, getReply } = useChatCompletion();
+  // @ts-expect-error: should be fine
+  const { parentMessageId, getReply, isLoadingReply } = useContext(MessageContext);
+
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -36,18 +38,22 @@ export default function UserInput() {
 
   const showAnswer = useCallback(() => {
     getReply(
-      prompt,
       {
-        onSuccess: ({data}) =>{
+        prompt,
+        parentMessageId
+      },
+      {
+        // @ts-expect-error: should be fine
+        onSuccess: ({reply}) =>{
           // sent prompt and response to conversation
           console.log(prompt);
-          console.log(data);
+          console.log(reply);
           console.log("should sent this to conversation");
           // clear prompt input
           setPrompt("");
         }
       });
-  }, [getReply, prompt]);
+  }, [getReply, parentMessageId, prompt]);
 
 
   useEffect(() => {
@@ -63,7 +69,7 @@ export default function UserInput() {
   }, [showAnswer])
 
 
-  if(isLoading) {
+  if(isLoadingReply) {
     return <p>Loading...</p>;
   }
 
@@ -74,6 +80,5 @@ export default function UserInput() {
         <ButtonIcon type="submit" $as="primary" size="lg"><MdSend /></ButtonIcon>
       </StyledInputForm>
     </Container>
-
   )
 }
