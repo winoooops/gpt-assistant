@@ -3,13 +3,13 @@ import styled from "styled-components";
 import {Outlet} from "react-router-dom";
 
 const StyledAppLayout = styled.div`
-  display: flex;
   overflow: hidden;
   min-height: 100vh;
+  z-index: var(--root-z-index);
 `;
 
 const Main = styled.main`
-  position: relative;
+  //position: relative;
 `;
 
 

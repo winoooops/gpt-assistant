@@ -51,5 +51,9 @@ export const GlobalStyles = createGlobalStyle`
     --border-radius-md: 7px;
     --border-radius-lg: 9px;
     --border-radius-rd: 50%;
+    
+    /* z-index */
+    --root-z-index: 100;
+    --overlay-z-index: 200;
   }
 `;

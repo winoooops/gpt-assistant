@@ -11,7 +11,6 @@ const StyledChatHistory = styled.div`
   flex-direction: column;
   //flex-grow: 1;
   overflow-y:auto;
-  overflow-x: hidden;
   gap: 1rem;
   text-align: start;
   padding: 2rem;

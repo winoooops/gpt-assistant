@@ -1,4 +1,4 @@
-# A Frontend Web Application for Chat-bot based on OpenAI API
+# A Frontend Web Application for ChatPage-bot based on OpenAI API
 
 ## Tech Stack
 * React Query for data fetching
