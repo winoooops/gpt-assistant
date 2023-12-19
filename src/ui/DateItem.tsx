@@ -1,8 +1,9 @@
-import {format, parseISO} from "date-fns"
+import {parseISO} from "date-fns"
+import {formatDate} from "../utils/fomateDate.ts";
 
 export default function DateItem({ date }: { date: string }) {
   const parsedDate = parseISO(date)
-  const formattedDate = format(parsedDate, "dd/MM/yyyy, h:mm:ss a");
+  const formattedDate = formatDate(parsedDate);
 
   return (
     <span>{formattedDate}</span>

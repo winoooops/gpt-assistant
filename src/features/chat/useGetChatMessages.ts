@@ -1,8 +1,8 @@
-import {QueryClient, useQuery} from "react-query";
+import {useQuery} from "react-query";
 import {apiGetMessages} from "../../services/apiChat.ts";
+import {queryClient} from "../../services/supabase.service.ts";
 
 export function useGetMessages() {
-  const queryClient = new QueryClient();
 
   const {data: messages, error, isLoading} = useQuery({
     queryKey: ["messages"],
@@ -10,6 +10,7 @@ export function useGetMessages() {
     onSuccess:(data) => {
       console.log(data);
       queryClient.setQueryData("parentMessage", data[data.length - 1])
+      // queryClient.invalidateQueries("messages");
     }
   })
 

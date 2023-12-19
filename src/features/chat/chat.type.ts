@@ -9,7 +9,7 @@ export interface MessageContent {
 }
 
 export interface IChatMessage {
-  id: string,
+  id?: string,
   createdAt: string,
   parentMessageId?: string,
   content: MessageContent,

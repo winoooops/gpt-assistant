@@ -10,6 +10,7 @@ const StyledAppLayout = styled.div`
 
 const Main = styled.main`
   position: relative;
+  width: 100vw;
 `;
 
 

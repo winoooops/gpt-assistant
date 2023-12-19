@@ -13,6 +13,7 @@ export function useScroll(){
 
   const handleScroll = useCallback(() => {
     const container = containerRef.current;
+    console.log(container);
     if(container) {
       const {scrollTop, scrollHeight, clientHeight} = container;
       const isBottom = scrollTop + clientHeight === scrollHeight;
@@ -33,7 +34,8 @@ export function useScroll(){
       container && container.removeEventListener('scroll', handleScroll);
     }
 
-  }, [handleScrollToBottom, handleScroll])
+    // don't need dependency array since it only runs once
+  });
 
-  return { containerRef, showJumpToBottom, handleScrollToBottom};
+  return { containerRef, showJumpToBottom, handleScrollToBottom };
 }

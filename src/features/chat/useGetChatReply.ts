@@ -1,8 +1,10 @@
-import {QueryClient, useMutation} from "react-query";
+import {useMutation} from "react-query";
 import {ChatCompletionParams} from "./chat.type.ts";
 import {fetchChatReply} from "../../services/apiChat.ts";
+import {queryClient} from "../../services/supabase.service.ts";
+
 export function useGetChatReply() {
-  const queryClient = new QueryClient();
+
   const {isLoading, mutate: getReply} = useMutation({
     mutationFn: (payload: ChatCompletionParams) => fetchChatReply(payload),
     onSuccess: (data) => {

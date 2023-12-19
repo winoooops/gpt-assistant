@@ -2,22 +2,19 @@ import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AppLayout from "./ui/AppLayout.tsx";
 import Chat from "./pages/Chat.tsx";
-import {QueryClient, QueryClientProvider} from "react-query";
+import {QueryClientProvider} from "react-query";
 import {GlobalStyles} from "./styles/GlobalStyles.ts";
+import {ReactQueryDevtools} from "react-query/devtools";
+import {queryClient} from "./services/supabase.service.ts";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000
-    },
-  },
-});
+
 
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyles />
+      <ReactQueryDevtools />
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>

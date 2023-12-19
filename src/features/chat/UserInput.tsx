@@ -27,7 +27,7 @@ const StyledInputForm = styled.form`
 export default function UserInput() {
   const [prompt, setPrompt] = useState("");
   // @ts-expect-error: should be fine
-  const { parentMessageId, getReply, isLoadingReply } = useContext(MessageContext);
+  const { parentMessageId, getReply, isLoadingReply, addPromptMessage } = useContext(MessageContext);
 
 
   function handleSubmit(e: FormEvent) {
@@ -37,6 +37,12 @@ export default function UserInput() {
   }
 
   const showAnswer = useCallback(() => {
+    if(!prompt) {
+      return;
+    }
+
+    addPromptMessage(prompt);
+
     getReply(
       {
         prompt,
@@ -53,7 +59,7 @@ export default function UserInput() {
           setPrompt("");
         }
       });
-  }, [getReply, parentMessageId, prompt]);
+  }, [getReply, parentMessageId, prompt, addPromptMessage]);
 
 
   useEffect(() => {
@@ -77,7 +83,7 @@ export default function UserInput() {
     <Container>
       <StyledInputForm onSubmit={handleSubmit}>
         <InputField prompt={prompt} setPrompt={setPrompt} />
-        <ButtonIcon type="submit" $as="primary" size="lg"><MdSend /></ButtonIcon>
+        <ButtonIcon type="submit" $as="primary" $size="lg"><MdSend /></ButtonIcon>
       </StyledInputForm>
     </Container>
   )
