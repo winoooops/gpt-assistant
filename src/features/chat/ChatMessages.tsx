@@ -4,7 +4,7 @@ import {RiArrowDownLine} from "react-icons/ri";
 import ChatMessage from "./ChatMessage.tsx";
 import {IChatMessage} from "./chat.type.ts";
 import {useContext, useEffect} from "react";
-import {MessageContext} from "./MessageContext.tsx";
+import {ChatContext} from "./ChatContext.tsx";
 
 const StyledChatHistory = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ const FloatingButton = styled(ButtonIcon)`
 
 export default function ChatMessages() {
   // @ts-expect-error: should be fine
-  const { messages, containerRef, handleScrollToBottom, showJumpToBottom } = useContext(MessageContext);
+  const { messages, containerRef, handleScrollToBottom, showJumpToBottom } = useContext(ChatContext);
 
   useEffect(() => {
     handleScrollToBottom();

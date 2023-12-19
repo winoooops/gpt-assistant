@@ -1,7 +1,7 @@
 import ChatInput from "../features/chat/ChatInput.tsx";
 import ChatMessages from "../features/chat/ChatMessages.tsx";
 import styled from "styled-components";
-import {MessageProvider} from "../features/chat/MessageContext.tsx";
+import {MessageProvider} from "../features/chat/ChatContext.tsx";
 
 const Container = styled.div`
   height: 100vh; 

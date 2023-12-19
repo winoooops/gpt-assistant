@@ -3,7 +3,7 @@ import {ChatCompletionParams} from "./chat.type.ts";
 import {fetchChatReply} from "../../services/apiChat.ts";
 import {queryClient} from "../../services/supabase.service.ts";
 
-export function useGetChatReply() {
+export function useChatGetReply() {
 
   const {isLoading, mutate: getReply} = useMutation({
     mutationFn: (payload: ChatCompletionParams) => fetchChatReply(payload),

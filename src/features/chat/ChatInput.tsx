@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {FormEvent, useCallback, useContext, useEffect, useState} from "react";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import InputField from "../../ui/InputField.tsx";
-import {MessageContext} from "./MessageContext.tsx";
+import {ChatContext} from "./ChatContext.tsx";
 
 const Container = styled.div`
   padding: 1rem;
@@ -27,7 +27,7 @@ const StyledInputForm = styled.form`
 export default function ChatInput() {
   const [prompt, setPrompt] = useState("");
   // @ts-expect-error: should be fine
-  const { parentMessageId, getReply, isLoadingReply, addPromptMessage } = useContext(MessageContext);
+  const { parentMessageId, getReply, isLoadingReply, addPromptMessage } = useContext(ChatContext);
 
 
   function handleSubmit(e: FormEvent) {
