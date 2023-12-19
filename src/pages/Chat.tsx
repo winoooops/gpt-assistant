@@ -1,5 +1,5 @@
-import UserInput from "../features/chat/UserInput.tsx";
-import ChatHistory from "../features/chat/ChatHistory.tsx";
+import ChatInput from "../features/chat/ChatInput.tsx";
+import ChatMessages from "../features/chat/ChatMessages.tsx";
 import styled from "styled-components";
 import {MessageProvider} from "../features/chat/MessageContext.tsx";
 
@@ -16,8 +16,8 @@ export default function Chat() {
   return (
     <MessageProvider>
       <Container>
-        <ChatHistory />
-        <UserInput/>
+        <ChatMessages />
+        <ChatInput/>
       </Container>
     </MessageProvider>
   )

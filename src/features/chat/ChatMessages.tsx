@@ -26,7 +26,7 @@ const FloatingButton = styled(ButtonIcon)`
 `
 
 
-export default function ChatHistory() {
+export default function ChatMessages() {
   // @ts-expect-error: should be fine
   const { messages, containerRef, handleScrollToBottom, showJumpToBottom } = useContext(MessageContext);
 

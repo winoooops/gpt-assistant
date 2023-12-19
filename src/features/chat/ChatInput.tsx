@@ -24,7 +24,7 @@ const StyledInputForm = styled.form`
 `;
 
 
-export default function UserInput() {
+export default function ChatInput() {
   const [prompt, setPrompt] = useState("");
   // @ts-expect-error: should be fine
   const { parentMessageId, getReply, isLoadingReply, addPromptMessage } = useContext(MessageContext);
