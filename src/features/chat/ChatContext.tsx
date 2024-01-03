@@ -19,7 +19,12 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
   const addPromptMessage = useCallback((prompt: string) => {
 
     if(messages) {
-      const updatedMessages = [...messages, {content: {role: "user", content: prompt}, createdAt: formatCurrentDate()}];
+      const updatedMessages = [...messages, {
+        content: {role: "user", content: prompt},
+        createdAt: formatCurrentDate(),
+        id: "temp",
+        parentMessageId
+      }];
       console.log(updatedMessages);
       queryClient.setQueryData("messages", updatedMessages);
     }

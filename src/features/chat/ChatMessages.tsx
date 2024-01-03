@@ -42,7 +42,7 @@ export default function ChatMessages() {
         messages.map((message: IChatMessage) => <ChatMessage key={message.id} message={message}/>)
       }
       { showJumpToBottom &&
-        <FloatingButton onClick={handleScrollToBottom} $shape="square" $translucent={true}>
+        <FloatingButton onClick={handleScrollToBottom} $shape="square" $as="translucent">
           <RiArrowDownLine />
         </FloatingButton>
       }

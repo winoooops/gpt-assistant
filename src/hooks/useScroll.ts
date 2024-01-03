@@ -13,7 +13,6 @@ export function useScroll(){
 
   const handleScroll = useCallback(() => {
     const container = containerRef.current;
-    console.log(container);
     if(container) {
       const {scrollTop, scrollHeight, clientHeight} = container;
       const isBottom = scrollTop + clientHeight === scrollHeight;

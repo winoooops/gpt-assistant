@@ -7,8 +7,7 @@ export function useChatGetReply() {
 
   const {isLoading, mutate: getReply} = useMutation({
     mutationFn: (payload: ChatCompletionParams) => fetchChatReply(payload),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       queryClient.invalidateQueries("messages");
     },
     onError: ({message}) => {

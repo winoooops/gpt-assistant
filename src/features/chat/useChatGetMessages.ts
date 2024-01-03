@@ -8,7 +8,6 @@ export function useGetMessages() {
     queryKey: ["messages"],
     queryFn: () => apiGetMessages(),
     onSuccess:(data) => {
-      console.log(data);
       queryClient.setQueryData("parentMessage", data[data.length - 1])
       // queryClient.invalidateQueries("messages");
     }

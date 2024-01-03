@@ -83,7 +83,7 @@ export default function ChatInput() {
     <Container>
       <StyledInputForm onSubmit={handleSubmit}>
         <InputField prompt={prompt} setPrompt={setPrompt} />
-        <ButtonIcon type="submit" $as="primary" $size="lg"><MdSend /></ButtonIcon>
+        <ButtonIcon type="submit" $as="primary" $size="lg" disabled={isLoadingReply}><MdSend /></ButtonIcon>
       </StyledInputForm>
     </Container>
   )
