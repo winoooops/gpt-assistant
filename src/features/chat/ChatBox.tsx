@@ -16,15 +16,15 @@ const StyledChatBoxTitle = styled.div`
 `
 
 
-export default function ChatBox({ title }: {title: string}) {
+export default function ChatBox({ title, name }: {title: string, name: string }) {
   return (
     <StyledChatBox>
       <Box>
         <RiChat1Line />
         <StyledChatBoxTitle>{title}</StyledChatBoxTitle>
         <Menu>
-          <Menu.Button><RiMenu2Fill/></Menu.Button>
-          <Menu.List>
+          <Menu.Button name={name}><RiMenu2Fill/></Menu.Button>
+          <Menu.List name={name}>
             <ButtonIcon $as="transparent">
               <RiEdit2Line />
               <span>Edit</span>

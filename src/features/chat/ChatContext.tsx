@@ -1,4 +1,4 @@
-import React, {createContext, useCallback} from "react";
+import React, {createContext, useCallback, useState} from "react";
 import {useGetMessages} from "./useChatGetMessages.ts";
 import {useChatGetReply} from "./useChatGetReply.ts";
 import {formatCurrentDate} from "../../utils/fomateDate.ts";
@@ -14,6 +14,7 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
   const { getReply, isLoading: isLoadingReply} = useChatGetReply();
   const parentMessageId = messages && messages.length > 0 ? messages[messages.length - 1].id : null;
   const { containerRef, showJumpToBottom, handleScrollToBottom } = useScroll();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
 
   const addPromptMessage = useCallback((prompt: string) => {
@@ -42,7 +43,9 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
       addPromptMessage,
       containerRef,
       showJumpToBottom,
-      handleScrollToBottom
+      handleScrollToBottom,
+      isCollapsed,
+      setIsCollapsed
     }}>
       {children}
     </ChatContext.Provider>

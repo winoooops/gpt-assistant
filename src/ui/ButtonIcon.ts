@@ -24,8 +24,11 @@ const ButtonIcon = styled.button<{
   align-items: center;
   gap: 0.4rem;
   justify-content: center;
+  &:hover {
+    background: ${props => props.$as === 'primary' ? "var(--color-green-800)" : "var(--color-grey-800)"};
+  } 
   
-  
+ 
   & svg {
     flex-shrink: 0;
     width: ${props => props.$size ? "var(--svg-size-" + props.$size + ")"  : "var(--svg-size-md)" };

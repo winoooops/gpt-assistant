@@ -19,35 +19,36 @@ const StyledList = styled.ul<{$right: number, $top: number}>`
   padding: 0.6rem;
 `
 
-
-
 const MenuContext = createContext({});
 
-function Button({ children }: { children: React.ReactNode }) {
+function Button({ children, name }: { children: React.ReactNode, name: string }) {
   // @ts-expect-error: default value should be set with setShowMenu
-  const { setShowMenu, setPosition } = useContext(MenuContext);
+  const { setPosition, openName, closeMenu, openMenu } = useContext(MenuContext);
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    console.log(e.currentTarget);
     const rect = e.currentTarget.getBoundingClientRect();
     setPosition({
       x: window.innerWidth + rect.width - rect.x * 2,
       y: rect.y - rect.height / 2
     })
 
-    setShowMenu((prev: boolean) => !prev);
+    if(openName === name) {
+      closeMenu();
+    } else {
+      openMenu(name);
+    }
   }
 
   return <ButtonIcon $size="sm" $as="transparent" onClick={handleClick}>{children}</ButtonIcon>
 }
 
-function List({ children }: { children: React.ReactNode }) {
+function List({ children, name }: { children: React.ReactNode, name: string }) {
   // @ts-expect-error: default value should be set with setShowMenu
-  const { showMenu, position, setShowMenu } = useContext(MenuContext);
+  const { openName, position, closeMenu } = useContext(MenuContext);
   const { x, y } = position;
-  const ref = useOutsideClick(() => setShowMenu(false), true);
+  const ref = useOutsideClick(closeMenu, true);
 
-  if(!showMenu) return null;
+  if(openName !== name) return null;
 
   return createPortal(
     // @ts-expect-error: ref should be working
@@ -60,17 +61,27 @@ function List({ children }: { children: React.ReactNode }) {
 
 
 function Menu({children}: {children: React.ReactNode}) {
-  const [showMenu, setShowMenu] = useState(false);
+  const [openName, setOpenName] = useState("");
   const [position, setPosition] = useState({x: 0, y:0});
+  const { x, y } = position;
 
+  function openMenu(name: string) {
+    setOpenName(name);
+    console.log(`opening menu at [${x}, ${y}]...`);
+  }
 
+  function closeMenu() {
+    setOpenName("");
+    console.log(`closing menu at [${x}, ${y}]...`);
+  }
 
   return (
     <MenuContext.Provider value={{
-      showMenu,
-      setShowMenu,
       position,
-      setPosition
+      setPosition,
+      openName,
+      openMenu,
+      closeMenu,
     }}>
       {children}
     </MenuContext.Provider>
@@ -79,7 +90,5 @@ function Menu({children}: {children: React.ReactNode}) {
 
 Menu.Button = Button;
 Menu.List = List;
-
-
 
 export default Menu;

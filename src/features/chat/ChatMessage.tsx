@@ -43,7 +43,7 @@ export default function ChatMessage({ message: { content, createdAt } }: { messa
   const formattedText = useRenderText(text);
 
   return (
-    <Row reversed={isBot}>
+    <Row reversed={!isBot}>
       <Column $isLeft={isBot}>
         <DateItem date={createdAt}/>
         <StyledMessage role={role}>

@@ -6,6 +6,7 @@ export interface LineItem {
 }
 
 
+// TODO: should display code snippets as well
 function useTextConvert(text: string): LineItem[] {
   const results: LineItem[] = [];
   const paragraphTexts = text.split("\n\n");
