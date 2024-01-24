@@ -10,7 +10,22 @@ const Toggle = styled.div<{collapsed: boolean}>`
   right: 0; 
   transform: translateX(50%);
   overflow: hidden;
-  // width: ${props => props.collapsed ? "50%" : "100%"};
+`;
+
+const ToggleButton = styled(ButtonIcon)`
+  & svg {
+    color: var(--color-grey-600);
+  }
+  
+  &:focus {
+    outline: none;
+  }
+  
+  &:hover{
+    & svg {
+      color: var(--text-white-color);
+    }
+  }
 `;
 
 
@@ -24,11 +39,11 @@ export default function ChatSidebarToggle() {
 
   return (
     <Toggle collapsed={isCollapsed}>
-      <ButtonIcon $size="sm" $shape="square" onClick={toggleSidebar}>
+      <ToggleButton $as="dark" $size="sm" $shape="square" onClick={toggleSidebar}>
         {
           isCollapsed ? <RiArrowRightDoubleFill /> : <RiArrowLeftDoubleFill />
         }
-      </ButtonIcon>
+      </ToggleButton>
     </Toggle>
   )
 }

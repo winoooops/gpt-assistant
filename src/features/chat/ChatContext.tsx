@@ -15,7 +15,8 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
   const parentMessageId = messages && messages.length > 0 ? messages[messages.length - 1].id : null;
   const { containerRef, showJumpToBottom, handleScrollToBottom } = useScroll();
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const activeMessageFrom = messages && messages.length > 0 ? messages[0].id : null;
+  const [activeConversation, setActiveConversation] = useState(activeMessageFrom);
 
   const addPromptMessage = useCallback((prompt: string) => {
 
@@ -32,6 +33,10 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
 
   }, [messages]);
 
+  function openConversation(pId: string) {
+    setActiveConversation(pId);
+  }
+
 
   return (
     <ChatContext.Provider value={{
@@ -45,7 +50,9 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
       showJumpToBottom,
       handleScrollToBottom,
       isCollapsed,
-      setIsCollapsed
+      setIsCollapsed,
+      activeConversation,
+      openConversation
     }}>
       {children}
     </ChatContext.Provider>

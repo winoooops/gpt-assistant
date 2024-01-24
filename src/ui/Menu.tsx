@@ -6,7 +6,7 @@ import {useOutsideClick} from "../hooks/useOutsideClick.ts";
 
 const StyledList = styled.ul<{$right: number, $top: number}>`
   position: fixed;
-  background-color: var(--color-grey-800);
+  background-color: var(--color-grey-700);
   border: 1px solid var(--color-grey-600);
   border-radius: var(--border-radius-md);
   right: ${props => props.$right}px;
@@ -14,23 +14,57 @@ const StyledList = styled.ul<{$right: number, $top: number}>`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  align-items: center;
+  align-items: flex-start;
   z-index: var(--overlay-z-index);
   padding: 0.6rem;
 `
 
+const StyledButton = styled.button<{ dark?: boolean }>`
+  background-color: ${props => props.dark ? "var(--color-grey-900)" : "var(--color-grey-400)"};
+  margin: 0;
+  padding-left: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  
+  &:hover {
+    background-color: var(--color-grey-800); 
+  }
+  
+  &:active {
+    outline: none;  
+  }
+`;
+
+
 const MenuContext = createContext({});
 
-function Button({ children, name }: { children: React.ReactNode, name: string }) {
+function Toggle({ children, name, isRow }: { children: React.ReactNode, name: string | undefined, isRow?: boolean }) {
   // @ts-expect-error: default value should be set with setShowMenu
   const { setPosition, openName, closeMenu, openMenu } = useContext(MenuContext);
 
-  function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+  function handleClick(e: React.MouseEvent<HTMLElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
-    setPosition({
-      x: window.innerWidth + rect.width - rect.x * 2,
-      y: rect.y - rect.height / 2
-    })
+    if(isRow) {
+      setPosition({
+        // x: window.innerWidth - rect.width - rect.x,
+        x: window.innerWidth - rect.left - rect.width,
+        // y: rect.y + rect.height
+        y: rect.top + rect.height
+      });
+    } else {
+      setPosition({
+        // x: window.innerWidth - rect.x * 2,
+        // y: rect.y - rect.height / 2
+        x: window.innerWidth - rect.right - rect.width * 2 ,
+        y: rect.bottom - rect.height / 2,
+      });
+    }
+
 
     if(openName === name) {
       closeMenu();
@@ -39,16 +73,19 @@ function Button({ children, name }: { children: React.ReactNode, name: string })
     }
   }
 
+  if(isRow) return <StyledButton onClick={handleClick} dark={true}>{children}</StyledButton>
+
   return <ButtonIcon $size="sm" $as="transparent" onClick={handleClick}>{children}</ButtonIcon>
 }
 
-function List({ children, name }: { children: React.ReactNode, name: string }) {
+
+function List({ children, name }: { children: React.ReactNode, name: string | undefined }) {
   // @ts-expect-error: default value should be set with setShowMenu
   const { openName, position, closeMenu } = useContext(MenuContext);
   const { x, y } = position;
   const ref = useOutsideClick(closeMenu, true);
 
-  if(openName !== name) return null;
+  if(openName !== name || !name) return null;
 
   return createPortal(
     // @ts-expect-error: ref should be working
@@ -88,7 +125,7 @@ function Menu({children}: {children: React.ReactNode}) {
   )
 }
 
-Menu.Button = Button;
+Menu.Toggle = Toggle;
 Menu.List = List;
 
 export default Menu;

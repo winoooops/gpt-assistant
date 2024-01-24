@@ -29,6 +29,10 @@ export const GlobalStyles = createGlobalStyle`
     --color-grey-800: #1f2937;
     --color-grey-900: #111827;
     --color-grey-500-translucent: #6b7c804d;
+    
+    /* Red */ 
+    --color-red-700: #b91c1c;
+    --color-red-700-translucent: #b91c1c66;
 
     /* Button Styles */
     --button-background-color: var(--primary-color); /* Background color for buttons */

@@ -44,14 +44,14 @@ export default function ChatMessage({ message: { content, createdAt } }: { messa
 
   return (
     <Row reversed={!isBot}>
+      <Avatar isBot={isBot} />
+
       <Column $isLeft={isBot}>
         <DateItem date={createdAt}/>
         <StyledMessage role={role}>
           {formattedText}
         </StyledMessage>
       </Column>
-
-      <Avatar isBot={isBot} />
     </Row>
   );
 }
