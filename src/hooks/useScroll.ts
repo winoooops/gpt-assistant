@@ -15,7 +15,7 @@ export function useScroll(){
     const container = containerRef.current;
     if(container) {
       const {scrollTop, scrollHeight, clientHeight} = container;
-      const isBottom = scrollTop + clientHeight === scrollHeight;
+      const isBottom = Math.ceil(scrollTop + clientHeight) === scrollHeight;
       setShowJumpToBottom(!isBottom);
     }
   }, [])
