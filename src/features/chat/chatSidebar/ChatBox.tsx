@@ -14,16 +14,17 @@ const StyledChatBoxTitle = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: center;
-  max-width: 10rem;
+  width: 10rem;
+  cursor: pointer; 
 `
 
 
-export default function ChatBox({ title, name, focus }: {title: string, name: string | undefined, focus: boolean }) {
+export default function ChatBox({ label, name, focus, handleClick }: {label: string, name: string | undefined, focus: boolean, handleClick: () => void}) {
   return (
     <StyledContainer>
       <Box focus={focus}>
         <RiChat1Line />
-        <StyledChatBoxTitle>{title}</StyledChatBoxTitle>
+        <StyledChatBoxTitle onClick={handleClick}>{label}</StyledChatBoxTitle>
         <Menu>
           <Menu.Toggle name={name}><RiMoreFill /></Menu.Toggle>
           <Menu.List name={name}>

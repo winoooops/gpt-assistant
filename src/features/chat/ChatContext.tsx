@@ -4,22 +4,29 @@ import {useChatGetReply} from "./useChatGetReply.ts";
 import {formatCurrentDate} from "../../utils/fomateDate.ts";
 import {queryClient} from "../../services/supabase.service.ts";
 import {useScroll} from "../../hooks/useScroll.ts";
+import {useGetConversations} from "./useChatGetConversations.ts";
+import {useSearchParams} from "react-router-dom";
 
 
 export const ChatContext= createContext({});
 
 
 export function MessageProvider ({children}: {children: React.ReactNode}) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeConversation = Number(searchParams.get("conversationId")) || 1;
   const { messages, isLoading: isLoadingMessages} = useGetMessages();
+  const { conversations, isLoading: isLoadingConversations} = useGetConversations();
   const { getReply, isLoading: isLoadingReply} = useChatGetReply();
   const parentMessageId = messages && messages.length > 0 ? messages[messages.length - 1].id : null;
   const { containerRef, showJumpToBottom, handleScrollToBottom } = useScroll();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const activeMessageFrom = messages && messages.length > 0 ? messages[0].id : null;
-  const [activeConversation, setActiveConversation] = useState(activeMessageFrom);
+
+  const setActiveConversation = (conversationId: string) => {
+    searchParams.set("conversationId", conversationId);
+    setSearchParams(searchParams);
+  }
 
   const addPromptMessage = useCallback((prompt: string) => {
-
     if(messages) {
       const updatedMessages = [...messages, {
         content: {role: "user", content: prompt},
@@ -27,7 +34,6 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
         id: "temp",
         parentMessageId
       }];
-      console.log(updatedMessages);
       queryClient.setQueryData("messages", updatedMessages);
     }
 
@@ -52,7 +58,10 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
       isCollapsed,
       setIsCollapsed,
       activeConversation,
-      openConversation
+      setActiveConversation,
+      openConversation,
+      conversations: conversations || [],
+      isLoadingConversations
     }}>
       {children}
     </ChatContext.Provider>

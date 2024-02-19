@@ -1,5 +1,5 @@
 import './App.css'
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import AppLayout from "./ui/AppLayout.tsx";
 import ChatPage from "./pages/ChatPage.tsx";
 import {QueryClientProvider} from "react-query";
@@ -18,7 +18,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
-            <Route index element={<ChatPage />} />
+            <Route index element={<Navigate replace to="chat" />} />
+            <Route path="chat" element={<ChatPage />} />
+            <Route path="chat:conversationId" element={<ChatPage />} />
           </Route>
           {/*<Route path='/login' element={<Login />} />*/}
         </Routes>

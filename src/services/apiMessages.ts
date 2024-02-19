@@ -1,5 +1,5 @@
-import {ChatCompletionParams, IChatMessage} from "../features/chat/chat.type.ts";
 import supabase from "./supabase.service.ts";
+import {ChatCompletionParams} from "../features/chat/chat.type.ts";
 
 export async function fetchChatReply(payload: ChatCompletionParams) {
   // @ts-expect-error: compiler doesn't know about import meta
@@ -10,36 +10,38 @@ export async function fetchChatReply(payload: ChatCompletionParams) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ ...payload })
+    body: JSON.stringify({...payload})
   });
 
   const data = await response.json();
-  if(!data) {
+  if (!data) {
     throw new Error("No data");
   }
   return data;
 }
 
+export async function apiGetMessagesFromConversationId(conversationId: string) {
+  const {data, error} = await supabase.from("messages")
+    .select("*")
+    .order("parentMessageId", {ascending: true, nullsFirst: true})
+    .eq("conversationId", conversationId);
+
+  if (error) {
+    throw new Error(`Failed to get messages from conversation id: ${conversationId}`);
+  }
+
+  return data;
+}
+
 export async function apiGetMessageById(id: string) {
-  const { data: message, error } = await supabase.from("messages")
+  const {data: message, error} = await supabase.from("messages")
     .select("*")
     .eq("id", id)
     .single();
 
-  if(error) {
+  if (error) {
     throw new Error(`Failed to get message from id: ${id}`);
   }
 
   return message;
-}
-
-export async function apiGetMessages() {
-  const { data, error } = await supabase.from("messages")
-    .select("*");
-
-  if(error) {
-    throw new Error(`Failed to get messages`);
-  }
-
-  return data as IChatMessage[];
 }

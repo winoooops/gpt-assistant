@@ -15,6 +15,14 @@ export interface IChatMessage {
   content: MessageContent,
 }
 
+export interface IChatConversation {
+  id: string,
+  isOnTop: boolean,
+  label?: string,
+  icon?: string,
+}
+
+
 export interface ChatCompletionParams {
   prompt: string;
   parentMessageId: string | null;
