@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Menu from "../../../ui/Menu.tsx";
 
 const StyledContainer = styled.div`
-  margin: 1rem;
+  margin: 0.5rem 1rem 0.5rem 1rem;
 `;
 
 
@@ -14,12 +14,12 @@ const StyledChatBoxTitle = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: center;
-  width: 10rem;
+  width:10rem;
   cursor: pointer; 
 `
 
 
-export default function ChatBox({ label, name, focus, handleClick }: {label: string, name: string | undefined, focus: boolean, handleClick: () => void}) {
+export default function ConversationBox({ label, name, focus, handleClick }: {label: string, name: string | undefined, focus: boolean, handleClick: () => void}) {
   return (
     <StyledContainer>
       <Box focus={focus}>

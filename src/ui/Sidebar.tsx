@@ -14,6 +14,7 @@ const StyledSidebar = styled.aside<{ collapsed: boolean }>`
 
 
 export default function Sidebar({ children, isCollapsed }: { children: React.ReactNode[], isCollapsed: boolean }) {
+  console.log(`isSidebar closed: ${isCollapsed}`);
   return (
     <StyledSidebar collapsed={isCollapsed}>
       <nav>

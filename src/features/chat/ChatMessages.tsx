@@ -11,7 +11,7 @@ const StyledChatHistory = styled.div`
   flex-direction: column;
   //flex-grow: 1;
   overflow-y:auto;
-  gap: 1rem;
+  gap: 0.2rem;
   text-align: start;
   padding: 2rem;
   position: relative;
@@ -33,7 +33,7 @@ export default function ChatMessages() {
     handleScrollToBottom();
   }, [messages, handleScrollToBottom]);
 
-  if(messages.length === 0) return <p>Chat</p>
+  if(messages.length === 0) return <StyledChatHistory><p>Chat</p></StyledChatHistory>
 
 
   return (

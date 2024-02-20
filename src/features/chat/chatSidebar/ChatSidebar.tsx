@@ -3,7 +3,7 @@ import {useContext} from "react";
 import Sidebar from "../../../ui/Sidebar.tsx";
 import ChatSidebarMenu from "./ChatSidebarMenu.tsx";
 import ChatSidebarToggle from "./ChatSidebarToggle.tsx";
-import Chats from "../Chats.tsx";
+import Conversations from "../Conversations.tsx";
 import ScrollableContainer from "../../../ui/ScrollContainer.tsx";
 
 export default function ChatSidebar() {
@@ -13,7 +13,7 @@ export default function ChatSidebar() {
   return (
     <Sidebar isCollapsed={isCollapsed}>
       <ScrollableContainer>
-        <Chats />
+        <Conversations />
         <ChatSidebarMenu />
       </ScrollableContainer>
 

@@ -1,7 +1,7 @@
 import {IChatConversation} from "./chat.type.ts";
 import {useContext} from "react";
 import {ChatContext} from "./ChatContext.tsx";
-import ChatBox from "./chatSidebar/ChatBox.tsx";
+import ConversationBox from "./chatSidebar/ConversationBox.tsx";
 import styled from "styled-components";
 
 const StyledChatBoxList = styled.div`
@@ -13,7 +13,7 @@ const StyledChatBoxList = styled.div`
 
 
 
-export default function Chats() {
+export default function Conversations() {
   // @ts-expect-error: should be fine
   const {isCollapsed, activeConversation, conversations, isLoadingConversations, setActiveConversation} = useContext(ChatContext);
 
@@ -29,7 +29,7 @@ export default function Chats() {
   return (
     <StyledChatBoxList>
       {conversations.map((title: IChatConversation ) =>
-        <ChatBox
+        <ConversationBox
           handleClick={() => handleClick(title.id)}
           key={title.id}
           name={title.id}
