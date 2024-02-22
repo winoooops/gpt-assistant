@@ -5,6 +5,7 @@ import {FormEvent, useCallback, useContext, useEffect, useState} from "react";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import InputField from "../../ui/InputField.tsx";
 import {ChatContext} from "./ChatContext.tsx";
+import {IChatMessageResponse} from "./chat.type.ts";
 
 const Container = styled.div`
   padding: 1rem;
@@ -26,8 +27,7 @@ const StyledInputForm = styled.form`
 
 export default function ChatInput() {
   const [prompt, setPrompt] = useState("");
-  // @ts-expect-error: should be fine
-  const { parentMessageId, getReply, isLoadingReply, addPromptMessage } = useContext(ChatContext);
+  const { parentMessageId, getReply, isLoadingReply, addPromptMessage, activeConversation } = useContext(ChatContext);
 
 
   function handleSubmit(e: FormEvent) {
@@ -46,19 +46,16 @@ export default function ChatInput() {
     getReply(
       {
         prompt,
-        parentMessageId
+        parentMessageId,
+        conversationId: activeConversation
       },
       {
-        // @ts-expect-error: should be fine
-        onSuccess: ({reply}) =>{
-          // sent prompt and response to conversation
-          console.log(prompt);
-          console.log(reply);
-          console.log("should sent this to conversation");
-          // clear prompt input
+        onSuccess: (data: IChatMessageResponse) => {
+          addPromptMessage(data.reply);
           setPrompt("");
         }
-      });
+      }
+    )
   }, [getReply, parentMessageId, prompt, addPromptMessage]);
 
 

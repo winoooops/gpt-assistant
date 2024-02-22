@@ -3,6 +3,7 @@ import {useContext} from "react";
 import {ChatContext} from "./ChatContext.tsx";
 import ConversationBox from "./chatSidebar/ConversationBox.tsx";
 import styled from "styled-components";
+import {isWithinSevenDays, isWithinThirtyDays} from "../../utils/fomateDate.ts";
 
 const StyledChatBoxList = styled.div`
   display: flex; 
@@ -11,11 +12,34 @@ const StyledChatBoxList = styled.div`
   align-items: flex-start;
 `;
 
+const StyledTitle = styled.h3`
+  color: var(--color-grey-500);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  padding-left: 1rem; 
+`
 
 
-export default function Conversations() {
-  // @ts-expect-error: should be fine
+
+export default function Conversations({ filter }: { filter: "7" | "30" | "pined"}) {
   const {isCollapsed, activeConversation, conversations, isLoadingConversations, setActiveConversation} = useContext(ChatContext);
+
+  let filteredConversations: IChatConversation[];
+
+  switch (filter) {
+    case "pined":
+      filteredConversations = conversations.filter((conversations: IChatConversation) => conversations.isOnTop);
+      break;
+    case "7":
+      filteredConversations = conversations.filter((conversations: IChatConversation) => isWithinSevenDays(conversations.updated_at) && !conversations.isOnTop);
+      break;
+    case "30":
+      filteredConversations = conversations.filter((conversations: IChatConversation) => isWithinThirtyDays(conversations.updated_at) && !conversations.isOnTop);
+      break;
+    default:
+      filteredConversations = [];
+      break;
+  }
 
   const handleClick= (conversationId: string) => {
     setActiveConversation(conversationId);
@@ -28,13 +52,18 @@ export default function Conversations() {
 
   return (
     <StyledChatBoxList>
-      {conversations.map((title: IChatConversation ) =>
+      {
+        filter !== "pined" && filteredConversations.length > 0 && <StyledTitle>Last {filter} days</StyledTitle>
+      }
+
+      {filteredConversations.map((title: IChatConversation ) =>
         <ConversationBox
+          id={title.id}
           handleClick={() => handleClick(title.id)}
           key={title.id}
-          name={title.id}
           label={title.label || ""}
           focus={activeConversation === title.id}
+          pinned={title.isOnTop}
         />)
       }
     </StyledChatBoxList>

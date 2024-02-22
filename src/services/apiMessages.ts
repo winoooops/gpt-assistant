@@ -1,5 +1,5 @@
 import supabase from "./supabase.service.ts";
-import {ChatCompletionParams} from "../features/chat/chat.type.ts";
+import {ChatCompletionParams, IChatMessageResponse} from "../features/chat/chat.type.ts";
 
 export async function fetchChatReply(payload: ChatCompletionParams) {
   // @ts-expect-error: compiler doesn't know about import meta
@@ -13,10 +13,11 @@ export async function fetchChatReply(payload: ChatCompletionParams) {
     body: JSON.stringify({...payload})
   });
 
-  const data = await response.json();
+  const data: IChatMessageResponse = await response.json();
   if (!data) {
     throw new Error("No data");
   }
+
   return data;
 }
 

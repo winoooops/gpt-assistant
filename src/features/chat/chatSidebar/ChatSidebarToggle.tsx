@@ -30,7 +30,6 @@ const ToggleButton = styled(ButtonIcon)`
 
 
 export default function ChatSidebarToggle() {
-  // @ts-expect-error: should be fine
   const { isCollapsed, setIsCollapsed } = useContext(ChatContext);
 
   function toggleSidebar() {

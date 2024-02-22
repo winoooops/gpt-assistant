@@ -22,7 +22,6 @@ const StyledContainer = styled.div`
 `;
 
 export default function ChatSidebarMenu() {
-  // @ts-expect-error: should be fine
   const { isCollapsed } = useContext(ChatContext);
   if(isCollapsed) return null;
 
