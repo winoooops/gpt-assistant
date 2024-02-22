@@ -1,9 +1,9 @@
-import {IChatConversation} from "./chat.type.ts";
+import {IChatConversation} from "../chat.type.ts";
 import {useContext} from "react";
-import {ChatContext} from "./ChatContext.tsx";
-import ConversationBox from "./chatSidebar/ConversationBox.tsx";
+import {ChatContext} from "../ChatContext.tsx";
+import ConversationBox from "./ConversationBox.tsx";
 import styled from "styled-components";
-import {isWithinSevenDays, isWithinThirtyDays} from "../../utils/fomateDate.ts";
+import {isWithinSevenDays, isWithinThirtyDays} from "../../../utils/fomateDate.ts";
 
 const StyledChatBoxList = styled.div`
   display: flex; 

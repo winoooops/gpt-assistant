@@ -3,7 +3,7 @@ import {useContext} from "react";
 import Sidebar from "../../../ui/Sidebar.tsx";
 import ChatSidebarMenu from "./ChatSidebarMenu.tsx";
 import ChatSidebarToggle from "./ChatSidebarToggle.tsx";
-import Conversations from "../Conversations.tsx";
+import Conversations from "../conversations/Conversations.tsx";
 import ScrollableContainer from "../../../ui/ScrollContainer.tsx";
 import {StyledConversationBlocks} from "../conversations/ConversationBlocks.tsx";
 

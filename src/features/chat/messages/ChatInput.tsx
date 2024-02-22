@@ -2,10 +2,10 @@ import { MdSend } from "react-icons/md";
 
 import styled from "styled-components";
 import {FormEvent, useCallback, useContext, useEffect, useState} from "react";
-import ButtonIcon from "../../ui/ButtonIcon.ts";
-import InputField from "../../ui/InputField.tsx";
-import {ChatContext} from "./ChatContext.tsx";
-import {IChatMessageResponse} from "./chat.type.ts";
+import ButtonIcon from "../../../ui/ButtonIcon.ts";
+import InputField from "../../../ui/InputField.tsx";
+import {ChatContext} from "../ChatContext.tsx";
+import {IChatMessageResponse} from "../chat.type.ts";
 
 const Container = styled.div`
   padding: 1rem;

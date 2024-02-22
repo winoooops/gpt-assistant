@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import ButtonIcon from "../../ui/ButtonIcon.ts";
+import ButtonIcon from "../../../ui/ButtonIcon.ts";
 import {RiArrowDownLine} from "react-icons/ri";
 import ChatMessage from "./ChatMessage.tsx";
-import {IChatMessage} from "./chat.type.ts";
+import {IChatMessage} from "../chat.type.ts";
 import {useContext, useEffect} from "react";
-import {ChatContext} from "./ChatContext.tsx";
+import {ChatContext} from "../ChatContext.tsx";
 
 const StyledChatHistory = styled.div`
   display: flex;

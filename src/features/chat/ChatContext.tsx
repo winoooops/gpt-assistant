@@ -1,6 +1,6 @@
 import React, {createContext, useCallback, useState} from "react";
-import {useGetMessages} from "./useChatGetMessages.ts";
-import {useChatGetReply} from "./useChatGetReply.ts";
+import {useGetMessages} from "./messages/useChatGetMessages.ts";
+import {useChatGetReply} from "./messages/useChatGetReply.ts";
 import {formatCurrentDate} from "../../utils/fomateDate.ts";
 import {queryClient} from "../../services/supabase.service.ts";
 import {useScroll} from "../../hooks/useScroll.ts";

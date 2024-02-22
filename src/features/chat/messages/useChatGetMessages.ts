@@ -1,6 +1,6 @@
 import {useQuery} from "react-query";
-import {queryClient} from "../../services/supabase.service.ts";
-import {apiGetMessagesFromConversationId} from "../../services/apiMessages.ts";
+import {queryClient} from "../../../services/supabase.service.ts";
+import {apiGetMessagesFromConversationId} from "../../../services/apiMessages.ts";
 import {useSearchParams} from "react-router-dom";
 
 export function useGetMessages() {

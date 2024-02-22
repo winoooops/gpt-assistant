@@ -1,5 +1,5 @@
-import ChatInput from "../features/chat/ChatInput.tsx";
-import ChatMessages from "../features/chat/ChatMessages.tsx";
+import ChatInput from "../features/chat/messages/ChatInput.tsx";
+import ChatMessages from "../features/chat/messages/ChatMessages.tsx";
 import styled from "styled-components";
 import {MessageProvider} from "../features/chat/ChatContext.tsx";
 import ChatSidebar from "../features/chat/chatSidebar/ChatSidebar.tsx";

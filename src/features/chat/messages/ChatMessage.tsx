@@ -1,10 +1,10 @@
 import styled, {css} from "styled-components";
-import DateItem from "../../ui/DateItem.tsx";
-import Avatar from "../../ui/Avatar.tsx";
-import {IChatMessage} from "./chat.type.ts";
-import Row from "../../ui/Row.tsx";
-import Column from "../../ui/Column.tsx";
-import useRenderText from "../../utils/useTextConvert.tsx";
+import DateItem from "../../../ui/DateItem.tsx";
+import Avatar from "../../../ui/Avatar.tsx";
+import {IChatMessage} from "../chat.type.ts";
+import Row from "../../../ui/Row.tsx";
+import Column from "../../../ui/Column.tsx";
+import useRenderText from "../../../utils/useTextConvert.tsx";
 
 const StyledMessage = styled.div<{ role: string }>`
   ${(props) => props.role === "user" && 
