@@ -1,11 +1,10 @@
 import { MdSend } from "react-icons/md";
 
 import styled from "styled-components";
-import {FormEvent, useCallback, useContext, useEffect, useState} from "react";
+import { FormEvent, useContext, useEffect } from "react";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import InputField from "../../ui/InputField.tsx";
 import {ChatContext} from "./ChatContext.tsx";
-import {IChatMessageResponse} from "./chat.type.ts";
 
 const Container = styled.div`
   padding: 1rem;
@@ -17,7 +16,7 @@ const StyledInputForm = styled.form`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap:1rem;
+  gap:1rem; 
   left:0;
   right:0;
   position: sticky;
@@ -26,61 +25,27 @@ const StyledInputForm = styled.form`
 
 
 export default function ChatInput() {
-  const [prompt, setPrompt] = useState("");
-  const { parentMessageId, getReply, isLoadingReply, addPromptMessage, activeConversation } = useContext(ChatContext);
+  const { prompt, addPromptMessage, pendingText, pendingTextRef, subscribeToReply} = useContext(ChatContext);
 
+  // Update the ref whenever pendingText changes
+  useEffect(() => {
+    pendingTextRef.current += pendingText;
+  }, [pendingText]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if(!prompt) return;
 
-    showAnswer();
-  }
+    addPromptMessage(prompt, "user");
 
-  const showAnswer = useCallback(() => {
-    if(!prompt) {
-      return;
-    }
-
-    addPromptMessage(prompt);
-
-    getReply(
-      {
-        prompt,
-        parentMessageId,
-        conversationId: activeConversation
-      },
-      {
-        onSuccess: (data: IChatMessageResponse) => {
-          addPromptMessage(data.reply);
-          setPrompt("");
-        }
-      }
-    )
-  }, [getReply, parentMessageId, prompt, addPromptMessage]);
-
-
-  useEffect(() => {
-    function handleKeyboardEvent(e: KeyboardEvent) {
-      if(e.key === "Enter" && !e.shiftKey) {
-        showAnswer();
-      }
-    }
-
-    document.addEventListener("keydown", handleKeyboardEvent);
-
-    return () => document.removeEventListener("keydown", handleKeyboardEvent);
-  }, [showAnswer])
-
-
-  if(isLoadingReply) {
-    return <p>Loading...</p>;
+    subscribeToReply(prompt);
   }
 
   return (
     <Container>
       <StyledInputForm onSubmit={handleSubmit}>
-        <InputField prompt={prompt} setPrompt={setPrompt} />
-        <ButtonIcon type="submit" $as="primary" $size="lg" disabled={isLoadingReply}><MdSend /></ButtonIcon>
+        <InputField />
+        <ButtonIcon type="submit" $as="primary" $size="lg"><MdSend /></ButtonIcon>
       </StyledInputForm>
     </Container>
   )

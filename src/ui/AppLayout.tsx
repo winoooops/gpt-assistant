@@ -16,10 +16,10 @@ const Main = styled.main`
 
 export default function AppLayout() {
 	return (
-		<StyledAppLayout>
+    <StyledAppLayout>
       <Main>
         <Outlet />
       </Main>
     </StyledAppLayout>
-	)
+	);
 }

@@ -1,3 +1,4 @@
+import {useState} from "react";
 
 export interface LineItem {
   type: "p" | "li" | "ul" | "ol";
@@ -57,7 +58,7 @@ function useTextConvert(text: string): LineItem[] {
   return results;
 }
 
-export default function useRenderText(text: string) {
+export function useShowText(text: string) {
   const lineItems = useTextConvert(text);
 
   return lineItems.map((lineItem: LineItem, index: number) => {
@@ -81,4 +82,59 @@ export default function useRenderText(text: string) {
       )
     }
   })
+}
+
+
+export function useRenderText(chunk: string) {
+  const lineItems: LineItem[] = useAppendChunkToText(chunk)
+
+  return lineItems.map((lineItem: LineItem, index: number) => {
+    if(lineItem.type === "p") {
+      return <p key={index}>{lineItem.textContent}</p>
+    } else if (lineItem.type === "ul") {
+      return (
+        <ul key={index}>
+          {lineItem.children?.map((child: LineItem, childIndex: number) => (
+            <li key={childIndex}>{child.textContent}</li>
+          ))}
+        </ul>
+      )
+    } else if (lineItem.type === "ol") {
+      return (
+        <ol key={index}>
+          {lineItem.children?.map((child: LineItem, childIndex: number) => (
+            <li key={childIndex}>{child.textContent}</li>
+          ))}
+        </ol>
+      )
+    }
+  })
+}
+
+function useAppendChunkToText(chunk: string): LineItem[] {
+  console.log(`should append ${chunk} to the text`);
+  const [lineItems, setLineItems] = useState<LineItem[]>([]);
+  let lineItem: LineItem;
+
+  if(chunk.trim().startsWith("-")) {
+    lineItem = {
+      type: "li",
+      textContent: chunk.replace(/^- /, "")
+    }
+    setLineItems([...lineItems, lineItem])
+  } else if (chunk.trim().match(/^\d+\./)) {
+    lineItem = {
+      type: "li",
+      textContent: chunk.replace(/^\d+\./, "")
+    }
+    setLineItems([...lineItems, lineItem])
+  } else {
+    lineItem = {
+      type: "p",
+      textContent: chunk
+    }
+    setLineItems([...lineItems, lineItem])
+  }
+
+  return lineItems;
 }

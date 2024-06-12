@@ -6,7 +6,8 @@ import {QueryClientProvider} from "react-query";
 import {GlobalStyles} from "./styles/GlobalStyles.ts";
 import {ReactQueryDevtools} from "react-query/devtools";
 import {queryClient} from "./services/supabase.service.ts";
-
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -15,6 +16,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <GlobalStyles />
       <ReactQueryDevtools />
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>

@@ -2,9 +2,11 @@ import styled from "styled-components";
 import ButtonIcon from "../../ui/ButtonIcon.ts";
 import {RiArrowDownLine} from "react-icons/ri";
 import ChatMessage from "./ChatMessage.tsx";
-import {IChatMessage} from "./chat.type.ts";
 import {useContext, useEffect} from "react";
 import {ChatContext} from "./ChatContext.tsx";
+import {IChatMessage} from "./chat.type.ts";
+import ChatPendingMessage from "./ChatPendingMessage.tsx";
+import Greeting from "../../ui/Greeting.tsx";
 
 const StyledChatHistory = styled.div`
   display: flex;
@@ -26,13 +28,13 @@ const FloatingButton = styled(ButtonIcon)`
 
 
 export default function ChatMessages() {
-  const { messages, containerRef, handleScrollToBottom, showJumpToBottom } = useContext(ChatContext);
+  const { messages, containerRef, handleScrollToBottom, showJumpToBottom, pendingText} = useContext(ChatContext);
 
   useEffect(() => {
     handleScrollToBottom();
   }, [messages, handleScrollToBottom]);
 
-  if(messages.length === 0) return <StyledChatHistory><p>Chat</p></StyledChatHistory>
+  if(messages.length === 0) return <StyledChatHistory><Greeting /></StyledChatHistory>
 
 
   return (
@@ -40,6 +42,9 @@ export default function ChatMessages() {
       {
         messages.map((message: IChatMessage) => <ChatMessage key={message.id} message={message}/>)
       }
+
+      { pendingText !== "" && <ChatPendingMessage key="response" /> }
+
       { showJumpToBottom &&
         <FloatingButton onClick={handleScrollToBottom} $shape="square" $as="translucent">
           <RiArrowDownLine />

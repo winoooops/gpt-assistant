@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import {ChangeEvent, useRef, useState} from "react";
+import {ChangeEvent, useContext, useRef, useState} from "react";
+import {ChatContext} from "../features/chat/ChatContext.tsx";
 
 const StyledInputField = styled.textarea`
   overflow: hidden;
@@ -16,9 +17,10 @@ const StyledInputField = styled.textarea`
 const minRows = 1;
 const maxRows = 9;
 
-export default function InputField({ prompt, setPrompt}: {prompt: string, setPrompt: (prompt: string) => void}) {
+export default function InputField() {
   const [rows, setRows] = useState(minRows);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { prompt, setPrompt } = useContext(ChatContext);
 
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setPrompt(e.target.value);
