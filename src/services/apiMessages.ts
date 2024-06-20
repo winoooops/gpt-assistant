@@ -8,7 +8,7 @@ export function fetchChatReply(payload: ChatCompletionParams): Observable<string
   console.log(payload);
 
   return new Observable<string>((subscriber) => {
-    fetch(`${endpoint}/reply`, {
+    fetch(`${endpoint}/chat/reply`, {
       method: "POST",
       headers: {
         "Accept": "test/event-stream",

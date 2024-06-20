@@ -28,3 +28,7 @@ export async function apiUpdateConversation(payload: ChatConversationParams) {
 
   return data;
 }
+
+export async function apiAddConversation() {
+
+}

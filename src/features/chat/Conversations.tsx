@@ -1,7 +1,7 @@
 import {IChatConversation} from "./chat.type.ts";
 import {useContext} from "react";
 import {ChatContext} from "./ChatContext.tsx";
-import ConversationBox from "./chatSidebar/ConversationBox.tsx";
+import ConversationBox from "./conversations/ConversationBox.tsx";
 import styled from "styled-components";
 import {isWithinSevenDays, isWithinThirtyDays} from "../../utils/fomateDate.ts";
 

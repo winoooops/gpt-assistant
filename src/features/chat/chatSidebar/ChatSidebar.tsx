@@ -6,6 +6,7 @@ import ChatSidebarToggle from "./ChatSidebarToggle.tsx";
 import Conversations from "../Conversations.tsx";
 import ScrollableContainer from "../../../ui/ScrollContainer.tsx";
 import {StyledConversationBlocks} from "../conversations/ConversationBlocks.tsx";
+import ChatSidebarMenu from "./ChatSidebarMenu.tsx";
 
 export default function ChatSidebar() {
   const { isCollapsed } = useContext(ChatContext);
@@ -14,14 +15,14 @@ export default function ChatSidebar() {
     <Sidebar isCollapsed={isCollapsed}>
       <ScrollableContainer>
         <StyledConversationBlocks>
+
           <Conversations filter="pined"/>
           <Conversations filter="7"/>
           <Conversations filter="30"/>
         </StyledConversationBlocks>
 
-        {/*<ChatSidebarMenu />*/}
+        <ChatSidebarMenu />
       </ScrollableContainer>
-
       <ChatSidebarToggle />
     </Sidebar>
   )
