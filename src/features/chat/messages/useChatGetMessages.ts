@@ -1,15 +1,11 @@
 import {useQuery} from "react-query";
+import {apiGetMessages} from "../../../services/apiMessages.ts";
 import {queryClient} from "../../../services/supabase.service.ts";
-import {apiGetMessagesFromConversationId} from "../../../services/apiMessages.ts";
-import {useSearchParams} from "react-router-dom";
 
-export function useGetMessages() {
-  const [searchedParams] = useSearchParams();
-  const conversationId = searchedParams.get("conversationId") || "1";
-
+export function useGetMessages(){
   const {data: messages, error, isLoading} = useQuery({
-    queryKey: ["messages", conversationId],
-    queryFn: () => apiGetMessagesFromConversationId(conversationId),
+    queryKey: ["messages"],
+    queryFn: () => apiGetMessages(),
     onSuccess:(data) => {
       queryClient.setQueryData("parentMessage", data[data.length - 1])
       // queryClient.invalidateQueries("messages");

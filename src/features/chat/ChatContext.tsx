@@ -1,5 +1,4 @@
-import React, {createContext, useCallback, useState} from "react";
-import {useChatGetReply} from "./messages/useChatGetReply.ts";
+import React, {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {formatCurrentDate} from "../../utils/fomateDate.ts";
 import {queryClient} from "../../services/supabase.service.ts";
 import {useScroll} from "../../hooks/useScroll.ts";
@@ -8,6 +7,7 @@ import {useSearchParams} from "react-router-dom";
 import {useUpdateConversation} from "./conversations/useChatUpdateConversation.ts";
 import {ChatContextType} from "./chat.type.ts";
 import {useGetMessages} from "./messages/useChatGetMessages.ts";
+import {useChatGetReply} from "./messages/useChatGetReply.ts";
 
 export const ChatContext: React.Context<ChatContextType>= createContext({} as ChatContextType);
 
@@ -17,29 +17,66 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
   const activeConversation = searchParams.get("conversationId") || "1";
   const { messages, isLoading: isLoadingMessages} = useGetMessages();
   const { conversations, isLoading: isLoadingConversations} = useGetConversations();
-  const { getReply, isLoading: isLoadingReply} = useChatGetReply();
+  const { getReply } = useChatGetReply();
   const { updateConversation, isLoading: isUpdatingConversation} = useUpdateConversation();
-  const parentMessageId = messages && messages.length > 0 ? messages[messages.length - 1].id : null;
+  const parentMessageId = (messages && messages.length > 0) ? messages[messages.length - 1].id : null;
   const { containerRef, showJumpToBottom, handleScrollToBottom } = useScroll();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [pendingText, setPendingText] = useState("");
+  const pendingTextRef = useRef(pendingText);
+  const [prompt, setPrompt] = useState("");
+
+  const messageList = useRef(messages);
+  useEffect(() => {
+    messageList.current = messages;
+  }, [messages]);
 
   const setActiveConversation = (conversationId: string) => {
     searchParams.set("conversationId", conversationId);
     setSearchParams(searchParams);
   }
 
-  const addPromptMessage = useCallback((prompt: string) => {
-    if(messages) {
-      const updatedMessages = [...messages, {
-        content: {role: "user", content: prompt},
+  const addPromptMessage = useCallback((message: string, role: string) => {
+    if(messageList.current) {
+      const updatedMessages = [...messageList.current, {
+        content: {role, content: message},
         createdAt: formatCurrentDate(),
-        id: "temp",
+        id: `prompt-${formatCurrentDate()}`,
         parentMessageId
       }];
-      queryClient.setQueryData("messages", updatedMessages);
-    }
 
-  }, [messages]);
+      console.log(updatedMessages);
+
+      queryClient.setQueryData("messages", updatedMessages);
+    } else {
+      queryClient.setQueryData("messages", [{
+        content: {role, content: message},
+        createdAt: formatCurrentDate(),
+        id: `prompt-${formatCurrentDate()}`,
+        parentMessageId
+      }]);
+    }
+  }, [parentMessageId, messageList]);
+
+
+  const subscribeToReply = (prompt: string) => {
+    const reply$ = getReply({ prompt, parentMessageId, conversationId: activeConversation });
+
+    reply$.subscribe({
+      next: (chunk: string) => setPendingText(chunk.toString()),
+      error: (err: Error) => {
+        console.error(err);
+        setPendingText("Sorry, I am unable to process your request at the moment. Please try again later.");
+      },
+      complete: () => {
+        addPromptMessage(pendingTextRef.current, "assistant");
+        setPrompt("");
+        setPendingText("");
+      }
+    });
+  }
+
+
 
   function openConversation(pId: string) {
     setActiveConversation(pId);
@@ -52,7 +89,6 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
       parentMessageId,
       isLoadingMessages,
       getReply,
-      isLoadingReply,
       addPromptMessage,
       containerRef,
       showJumpToBottom,
@@ -66,6 +102,12 @@ export function MessageProvider ({children}: {children: React.ReactNode}) {
       isLoadingConversations,
       updateConversation,
       isUpdatingConversation,
+      pendingText,
+      setPendingText,
+      prompt,
+      setPrompt,
+      subscribeToReply,
+      pendingTextRef
     }}>
       {children}
     </ChatContext.Provider>

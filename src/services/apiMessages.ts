@@ -1,24 +1,36 @@
 import supabase from "./supabase.service.ts";
-import {ChatCompletionParams, IChatMessageResponse} from "../features/chat/chat.type.ts";
+import {ChatCompletionParams, IChatMessage } from "../features/chat/chat.type.ts";
+import {Observable} from "rxjs";
 
-export async function fetchChatReply(payload: ChatCompletionParams) {
+export function fetchChatReply(payload: ChatCompletionParams): Observable<string> {
   // @ts-expect-error: compiler doesn't know about import meta
   const endpoint = import.meta.env.VITE_API_URL || 'https://api.openai.com/v1/'
+  console.log(payload);
 
-  const response = await fetch(`${endpoint}/reply`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({...payload})
-  });
+  return new Observable<string>((subscriber) => {
+    fetch(`${endpoint}/chat/reply`, {
+      method: "POST",
+      headers: {
+        "Accept": "test/event-stream",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload)
+    }).then((response) => {
+      const reader = response.body?.pipeThrough(new TextDecoderStream).getReader();
+      const read = () => {
+        reader!.read().then(({ value, done}) => {
+          if(done) {
+            subscriber.complete();
+          } else {
+            subscriber.next(value);
+            read();
+          }
+        }).catch(error => subscriber.error(error));
+      };
 
-  const data: IChatMessageResponse = await response.json();
-  if (!data) {
-    throw new Error("No data");
-  }
-
-  return data;
+      read();
+    }).catch(error => subscriber.error(error));
+  })
 }
 
 export async function apiGetMessagesFromConversationId(conversationId: string) {
@@ -45,4 +57,15 @@ export async function apiGetMessageById(id: string) {
   }
 
   return message;
+}
+
+export async function apiGetMessages() {
+  const { data, error } = await supabase.from("messages")
+    .select("*");
+
+  if(error) {
+    throw new Error(`Failed to get messages`);
+  }
+
+  return data as IChatMessage[];
 }

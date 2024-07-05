@@ -1,22 +1,22 @@
 import React from 'react';
+import {Observable} from "rxjs";
 
 export enum Role {
   User,
   Assistant,
 }
 
-interface MutationConfig {
-  onSuccess?: (data: IChatMessageResponse) => void;
-  onError?: (error: { message: string }) => void;
-}
+// interface MutationConfig {
+//   onSuccess?: (data: IChatMessageResponse) => void;
+//   onError?: (error: { message: string }) => void;
+// }
 
 
 export interface ChatContextType {
    messages: IChatMessage[];
    parentMessageId: string | null;
    isLoadingMessages: boolean;
-   isLoadingReply: boolean;
-   addPromptMessage: (prompt: string) => void;
+   addPromptMessage: (message: string, role: string) => void;
    containerRef: React.RefObject<HTMLDivElement>;
    showJumpToBottom: boolean;
    handleScrollToBottom: () => void;
@@ -27,9 +27,15 @@ export interface ChatContextType {
    conversations: IChatConversation[];
    isLoadingConversations: boolean;
    updateConversation: (payload: ChatConversationParams) => void;
-   getReply: (payload: ChatCompletionParams, config?: MutationConfig) => void;
+   getReply: (payload: ChatCompletionParams) => Observable<string>;
    isUpdatingConversation: boolean;
    setActiveConversation: (id: string) => void;
+   pendingText: string;
+   setPendingText: React.Dispatch<React.SetStateAction<string>>;
+   prompt: string;
+   setPrompt: React.Dispatch<React.SetStateAction<string>>;
+   subscribeToReply: (prompt: string) => void;
+   pendingTextRef: React.MutableRefObject<string>
 }
 
 
@@ -40,15 +46,15 @@ export interface MessageContent {
 }
 
 export interface IChatMessage {
-  id?: string,
-  createdAt: string,
-  parentMessageId?: string,
+  id: string,
+  createdAt: string | null,
+  parentMessageId?: string | null,
   content: MessageContent,
 }
 
 export interface IChatMessageResponse {
   type: string;
-  reply: string;
+  data: string;
 }
 
 export interface IChatConversation {

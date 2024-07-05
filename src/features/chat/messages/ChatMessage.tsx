@@ -1,10 +1,10 @@
 import styled, {css} from "styled-components";
+import {useShowText} from "../../../utils/useRenderText.tsx";
+import {IChatMessage} from "../chat.type.ts";
 import DateItem from "../../../ui/DateItem.tsx";
 import Avatar from "../../../ui/Avatar.tsx";
-import {IChatMessage} from "../chat.type.ts";
-import Row from "../../../ui/Row.tsx";
 import Column from "../../../ui/Column.tsx";
-import useRenderText from "../../../utils/useRenderText.tsx";
+import Row from "../../../ui/Row.tsx";
 
 const StyledMessage = styled.div<{ role: string }>`
   ${(props) => props.role === "user" && 
@@ -40,14 +40,16 @@ const StyledMessage = styled.div<{ role: string }>`
 export default function ChatMessage({ message: { content, createdAt } }: { message: IChatMessage }) {
   const { role, content: text } = content;
   const isBot = role === "assistant";
-  const formattedText = useRenderText(text);
+  const formattedText = useShowText(text);
 
   return (
     <Row reversed={!isBot}>
       <Avatar isBot={isBot} />
 
       <Column $isLeft={isBot}>
-        <DateItem date={createdAt}/>
+        {
+          createdAt && <DateItem date={createdAt}/>
+        }
         <StyledMessage role={role}>
           {formattedText}
         </StyledMessage>

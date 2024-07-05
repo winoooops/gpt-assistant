@@ -1,3 +1,4 @@
+import {useState} from "react";
 
 export interface LineItem {
   type: "p" | "li" | "ul" | "ol";
@@ -5,36 +6,9 @@ export interface LineItem {
   children?: LineItem[];
 }
 
-export default function useRenderText(text: string) {
-  const lineItems = textToLineItems(text);
-
-  return lineItems.map((lineItem: LineItem, index: number) => {
-    if(lineItem.type === "p") {
-      // should display Bold, Italic and underline text
-      return <p key={index}>{lineItem.textContent}</p>
-    } else if (lineItem.type === "ul") {
-      return (
-        <ul key={index}>
-          {lineItem.children?.map((child: LineItem, childIndex: number) => (
-            <li key={childIndex}>{child.textContent}</li>
-          ))}
-        </ul>
-      )
-    } else if (lineItem.type === "ol") {
-      return (
-        <ol key={index}>
-          {lineItem.children?.map((child: LineItem, childIndex: number) => (
-            <li key={childIndex}>{child.textContent}</li>
-          ))}
-        </ol>
-      )
-    }
-  })
-}
 
 // TODO: should display code snippets as well
-// TODO: should display Italic, Bold and Underline
-function textToLineItems(text: string): LineItem[] {
+function useTextConvert(text: string): LineItem[] {
   const results: LineItem[] = [];
   const paragraphTexts = text.split("\n\n");
   const currentList: LineItem[] = [];
@@ -43,26 +17,25 @@ function textToLineItems(text: string): LineItem[] {
   paragraphTexts.forEach((paragraphText: string) => {
     const lineTexts = paragraphText.split("\n");
     lineTexts.forEach((lineText: string) => {
-      let isList = false;
-      let textContent: string;
+      let lineItem: LineItem;
 
       if(lineText.trim().startsWith("-")) {
         isOrdered = false;
-        isList = true;
-        textContent = lineText.replace(/^- /, "")
+        lineItem = {
+          type: "li",
+          textContent: lineText.replace(/^- /, "")
+        }
       } else if (lineText.trim().match(/^\d+\./)) {
         isOrdered = true;
-        isList = true;
-        textContent = lineText.replace(/^\d+\./, "")
+        lineItem = {
+          type: "li",
+          textContent: lineText.replace(/^\d+\./, "")
+        }
       } else {
-        isList = false;
-        textContent = lineText;
-
-      }
-
-      const lineItem: LineItem = {
-        type: isList ? "li" : "p",
-        textContent: getStyleText(textContent)
+        lineItem = {
+          type: "p",
+          textContent: lineText
+        }
       }
 
       if(lineItem.type === 'li') {
@@ -85,15 +58,83 @@ function textToLineItems(text: string): LineItem[] {
   return results;
 }
 
-function getStyleText(text: string | undefined): string {
-  if (!text) return "";
+export function useShowText(text: string) {
+  const lineItems = useTextConvert(text);
 
-  const bold = /\*\*(.*?)\*\*/g;
-  const italic = /(?<!\*)\*(?!\*)(.*?)\*(?!\*)/g;
-  const underline = /__(.*?)__/g;
+  return lineItems.map((lineItem: LineItem, index: number) => {
+    if(lineItem.type === "p") {
+      return <p key={index}>{lineItem.textContent}</p>
+    } else if (lineItem.type === "ul") {
+      return (
+        <ul key={index}>
+          {lineItem.children?.map((child: LineItem, childIndex: number) => (
+            <li key={childIndex}>{child.textContent}</li>
+          ))}
+        </ul>
+      )
+    } else if (lineItem.type === "ol") {
+      return (
+        <ol key={index}>
+          {lineItem.children?.map((child: LineItem, childIndex: number) => (
+            <li key={childIndex}>{child.textContent}</li>
+          ))}
+        </ol>
+      )
+    }
+  })
+}
 
-  return text
-    .replace(bold, "<strong>$1</strong>")
-    .replace(italic, "<em>$1</em>")
-    .replace(underline, "<u>$1</u>");
+
+export function useRenderText(chunk: string) {
+  const lineItems: LineItem[] = useAppendChunkToText(chunk)
+
+  return lineItems.map((lineItem: LineItem, index: number) => {
+    if(lineItem.type === "p") {
+      return <p key={index}>{lineItem.textContent}</p>
+    } else if (lineItem.type === "ul") {
+      return (
+        <ul key={index}>
+          {lineItem.children?.map((child: LineItem, childIndex: number) => (
+            <li key={childIndex}>{child.textContent}</li>
+          ))}
+        </ul>
+      )
+    } else if (lineItem.type === "ol") {
+      return (
+        <ol key={index}>
+          {lineItem.children?.map((child: LineItem, childIndex: number) => (
+            <li key={childIndex}>{child.textContent}</li>
+          ))}
+        </ol>
+      )
+    }
+  })
+}
+
+function useAppendChunkToText(chunk: string): LineItem[] {
+  console.log(`should append ${chunk} to the text`);
+  const [lineItems, setLineItems] = useState<LineItem[]>([]);
+  let lineItem: LineItem;
+
+  if(chunk.trim().startsWith("-")) {
+    lineItem = {
+      type: "li",
+      textContent: chunk.replace(/^- /, "")
+    }
+    setLineItems([...lineItems, lineItem])
+  } else if (chunk.trim().match(/^\d+\./)) {
+    lineItem = {
+      type: "li",
+      textContent: chunk.replace(/^\d+\./, "")
+    }
+    setLineItems([...lineItems, lineItem])
+  } else {
+    lineItem = {
+      type: "p",
+      textContent: chunk
+    }
+    setLineItems([...lineItems, lineItem])
+  }
+
+  return lineItems;
 }
