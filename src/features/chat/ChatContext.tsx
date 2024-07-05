@@ -1,5 +1,4 @@
 import React, {createContext, useCallback, useState} from "react";
-import {useGetMessages} from "./messages/useChatGetMessages.ts";
 import {useChatGetReply} from "./messages/useChatGetReply.ts";
 import {formatCurrentDate} from "../../utils/fomateDate.ts";
 import {queryClient} from "../../services/supabase.service.ts";
@@ -8,6 +7,7 @@ import {useGetConversations} from "./conversations/useChatGetConversations.ts";
 import {useSearchParams} from "react-router-dom";
 import {useUpdateConversation} from "./conversations/useChatUpdateConversation.ts";
 import {ChatContextType} from "./chat.type.ts";
+import {useGetMessages} from "./messages/useChatGetMessages.ts";
 
 export const ChatContext: React.Context<ChatContextType>= createContext({} as ChatContextType);
 

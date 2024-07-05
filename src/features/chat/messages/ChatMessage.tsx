@@ -4,7 +4,7 @@ import Avatar from "../../../ui/Avatar.tsx";
 import {IChatMessage} from "../chat.type.ts";
 import Row from "../../../ui/Row.tsx";
 import Column from "../../../ui/Column.tsx";
-import useRenderText from "../../../utils/useTextConvert.tsx";
+import useRenderText from "../../../utils/useRenderText.tsx";
 
 const StyledMessage = styled.div<{ role: string }>`
   ${(props) => props.role === "user" && 
